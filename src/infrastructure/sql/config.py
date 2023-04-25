@@ -6,6 +6,7 @@ class AsyncDatabaseSettings(BaseSettings):
     user: str = "postgres"
     password: str = "postgres"
     db_name: str = "postgres"
+    debug: bool = True
 
     class Config(BaseConfig):
         env_prefix = "postgres_"

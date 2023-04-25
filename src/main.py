@@ -12,4 +12,4 @@ if __name__ == "__main__":
     module = __name__
     container = SqlaRepositoriesContainer()
     container.wire(modules=[module])
-    asyncio.run(Rgsu().parse_aspirantura())
+    asyncio.run(Rgsu().worker())
