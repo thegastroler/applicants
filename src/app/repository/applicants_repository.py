@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
 from contextlib import AbstractAsyncContextManager
-from typing import Callable
-from typing import Optional, Type
-
-from sqlalchemy import select, update
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased
+from typing import Callable, Type
 
 from infrastructure.sql import models
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class ApplicantsRepository(ABC):

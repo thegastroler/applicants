@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from infrastructure.sql.db import Base
-from sqlalchemy import (TIMESTAMP, VARCHAR, Boolean, Column, Integer,
-                        SmallInteger, BigInteger, UniqueConstraint)
+from sqlalchemy import (VARCHAR, Boolean, Column, DateTime, Integer,
+                        SmallInteger, UniqueConstraint)
 
 
 class Applicants(Base):
@@ -14,9 +14,7 @@ class Applicants(Base):
     score = Column(SmallInteger, nullable=True)
     origin = Column(Boolean, nullable=False)
     position = Column(SmallInteger, nullable=True)
-
-    created_at = Column(TIMESTAMP, default=datetime.now(), nullable=False)
-    updated_at = Column(TIMESTAMP, onupdate=datetime.now(), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     __table_args__ = (UniqueConstraint("snils", "code", "university", name="snils_code_university"),)
 

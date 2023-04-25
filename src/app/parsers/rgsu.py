@@ -4,8 +4,8 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide
 from fastapi import Depends
-from app.schemas import ApplicantsSchema, ApplicantSchema
 from infrastructure.sql.models import Applicants
+
 
 class Rgsu:
     YES_NO = {'Нет': False, 'Да': True}
