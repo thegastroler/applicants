@@ -6,10 +6,12 @@ from dependency_injector.wiring import Provide
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from app.parsers.rgsu import Rgsu
+from app.parsers.mgotu import Mgotu
 
 
 if __name__ == "__main__":
     module = __name__
     container = SqlaRepositoriesContainer()
     container.wire(modules=[module])
-    asyncio.run(Rgsu().worker())
+    # asyncio.run(Rgsu().worker())
+    asyncio.run(Mgotu().worker())
