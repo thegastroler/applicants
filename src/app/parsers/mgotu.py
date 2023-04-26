@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide
 from fastapi import Depends
 from infrastructure.sql.models import Applicants
-import re
+
 
 class Mgotu:
     YES_NO = {'Нет': False, 'Да': True}
@@ -27,7 +27,8 @@ class Mgotu:
                     pages = int(href[href.index("?page=")+len("?page="):href.index("&t=1&addition=0")])
                 else:
                     break
-                for page in range(2, pages+1):
+                for page in range(2, 10):
+# TODO          for page in range(2, pages+1):
                     response = requests.get(url.format(page), stream=True)
                     if response.status_code == 200:
                         text = response.text

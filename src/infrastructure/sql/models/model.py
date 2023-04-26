@@ -12,7 +12,7 @@ class Applicants(Base):
     code = Column(VARCHAR(255), nullable=True)
     university = Column(VARCHAR(255), nullable=False)
     score = Column(SmallInteger, nullable=True)
-    origin = Column(Boolean, nullable=False)
+    origin = Column(Boolean, default=False)
     position = Column(SmallInteger, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
