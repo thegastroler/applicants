@@ -4,6 +4,7 @@ from typing import Callable, Type
 
 from infrastructure.sql import models
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -12,6 +13,10 @@ class ApplicantsRepository(ABC):
 
     @abstractmethod
     async def upload(self, data):
+        ...
+
+    @abstractmethod
+    async def search(self, snils):
         ...
 
 
@@ -36,3 +41,11 @@ class SqlaApplicantsRepository(ApplicantsRepository):
                     for i in data
                 ]).on_conflict_do_nothing())
             await session.commit()
+
+    async def search(self, snils):
+        async with self.session_factory() as session:
+            result = await session.execute(
+                select(self.model)
+                .filter(self.model.snils == snils))
+            items = result.scalars()
+            return items

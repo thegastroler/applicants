@@ -10,6 +10,9 @@ class ApplicantSchema(BaseModel):
     origin: str
     position: Optional[str]
 
+    class Config:
+        orm_mode = True
+
 
 class ApplicantsSchema(BaseModel):
     items: List[ApplicantSchema]

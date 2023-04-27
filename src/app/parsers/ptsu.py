@@ -32,7 +32,7 @@ class Ptsu:
                         snils=i[1],
                         score=int(i[2]) if i[2] else None,
                         origin=self.ORIGIN[i[3]],
-                        university='СПБГУ'
+                        university='ПТСУ'
                     )
                     for i in data
                 ]

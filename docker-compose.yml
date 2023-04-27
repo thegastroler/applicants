@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7.0.8-alpine
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+
+  api:
+    container_name: api
+    build:
+      context: .
+    restart: unless-stopped
+    command: bash -c "uvicorn api.app:app --host 0.0.0.0 --port 8000"
+    ports:
+      - 8000:8000
+    depends_on:
+      - redis
+
+  db:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    depends_on:
+      - redis
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+
+  worker:
+    build:
+      context: .
+    restart: unless-stopped
+    command: celery --app worker.celery worker --loglevel=info
+    depends_on:
+      - redis
+    volumes:
+      - worker_data:/tmp
+
+  worker_beat:
+    build:
+      context: .
+    command: celery --app worker.celery beat --loglevel=info --schedule /tmp/celerybeat-schedule
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+volumes:
+  worker_data:
+  postgres_data:

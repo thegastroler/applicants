@@ -2,7 +2,7 @@ from pydantic import BaseSettings, BaseConfig
 
 
 class AsyncDatabaseSettings(BaseSettings):
-    host: str = "localhost:5432"
+    host: str = "db:5432"
     user: str = "postgres"
     password: str = "postgres"
     db_name: str = "postgres"
