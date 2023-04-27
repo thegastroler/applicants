@@ -7,11 +7,9 @@ from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
 
-class Rgup:
+class Spbgtu:
     URL = [
-        ["https://rgup.ru/img/Priemnaya_komissiya/PRIEM%202023/spiski/ranj/bak_spec/Yurisprudentsiya%20(Bakalavr%202%20vysshee%20zaochnaya%20s%20oplatoy)%20(2022%20Zima).html", "Юриспруденция"],
-        ["https://rgup.ru/img/Priemnaya_komissiya/PRIEM%202023/spiski/ranj/mag/Ekonomika%20(Magistr%20ochno-zaochnaya%20s%20oplatoy)%20(2022%20Zima).html", "Экономика"],
-        ["https://rgup.ru/img/Priemnaya_komissiya/PRIEM%202023/spiski/ranj/mag/Gosudarstvennoe%20i%20munitsipalnoe%20upravlenie%20(Magistr%20ochno-zaochnaya%20s%20oplatoy)%20(2022%20Zima).html", "Государственное и муниципальное управление"],
+        ["https://technolog.edu.ru/content/clists/04.03.01_Химия_Очная_Бюджет", "Химия"],
     ]
 
     @inject
@@ -21,10 +19,13 @@ class Rgup:
             if response.status_code == 200:
                 text = response.text
                 soup = BeautifulSoup(text, 'html.parser')
-                rows = soup.find_all("tr", {"class": "R7"})
+                table = soup.find("table", {"class": "sticky-headers"})
+                rows = table.find_all("tr")[1:]
                 items = [[k.text for k in i.find_all("td")] for i in rows]
-                indexes = [0, 1, 2]
+                indexes = [0, 2]
                 data = [[i[k] for k in indexes] for i in items]
+                for idx, _ in enumerate(data):
+                    data[idx] = [idx + 1] + data[idx]
                 items = [
                     Applicants(
                         code=url[1],
@@ -32,7 +33,7 @@ class Rgup:
                         snils=i[1],
                         score=int(i[2]) if i[2] else None,
                         origin=None,
-                        university='РГУП'
+                        university='СПБГУ'
                     )
                     for i in data
                 ]

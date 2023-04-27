@@ -2,7 +2,7 @@ import requests
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
@@ -10,6 +10,7 @@ from infrastructure.sql.models import Applicants
 class Guz:
     URL = "https://www.guz.ru/applicants/priemnaya-kampaniya-2022-2023/enrollees/view_ratings.php?levelTraining="
 
+    @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
         response = requests.get(self.URL, stream=True, timeout=10)
         if response.status_code == 200:

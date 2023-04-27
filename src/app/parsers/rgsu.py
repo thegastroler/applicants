@@ -2,7 +2,7 @@ import requests
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
@@ -27,6 +27,7 @@ class Rgsu:
     ]
     BUDGET = ['бюджетные', 'внебюджетные']
 
+    @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
         for _url in self.URL:
             for budget in self.BUDGET:

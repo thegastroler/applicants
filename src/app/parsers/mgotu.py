@@ -2,7 +2,7 @@ import requests
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
-from dependency_injector.wiring import Provide
+from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
@@ -13,6 +13,7 @@ class Mgotu:
         "https://ies.unitech-mo.ru/list_rating_admission?page={}&t=1&addition=0",
     ]
 
+    @inject
     async def worker(self):
         for url in self.URL:
             response = requests.get(url.format(1), stream=True)
