@@ -11,11 +11,6 @@ from app.repository.applicants_repository import ApplicantsRepository
 from app.schemas import ApplicantSchema
 
 
-def init_container():
-    module = __name__
-    container = SqlaRepositoriesContainer()
-    container.wire(modules=[module])
-
 app = FastAPI()
 
 

@@ -9,7 +9,7 @@ celery_app = Celery("worker")
 celery_app.config_from_object("worker.celeryconfig")
 
 celery_app.conf.beat_schedule = {
-    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 30}
+    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 15}
 }
 
 
@@ -22,4 +22,4 @@ def celery_scheduled_task():
 
 @inject
 async def aggregate_data():
-    await parsers.Spbgtu().worker()
+    await parsers.Omgups().worker()

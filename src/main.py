@@ -1,13 +1,13 @@
 import asyncio
+import sys
 from app.repository import SqlaRepositoriesContainer
 from app import parsers
 import uvicorn
-from api.app import app, init_container
+from app.parsers import init_container
 
 if __name__ == "__main__":
-    # module = __name__
     # container = SqlaRepositoriesContainer()
-    # container.wire(modules=[module])
-    # asyncio.run(parsers.Ptsu().worker())
+    # container.wire(modules=[sys.modules[__name__]])
     init_container()
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    asyncio.run(parsers.Omgups().worker())
+    # uvicorn.run(app, host="0.0.0.0", port=8000)
