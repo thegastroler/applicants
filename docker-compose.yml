@@ -8,7 +8,6 @@ services:
       - 6379:6379
 
   api:
-    container_name: api
     build:
       context: .
     restart: unless-stopped

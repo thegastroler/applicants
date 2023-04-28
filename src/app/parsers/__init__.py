@@ -5,6 +5,7 @@ from .rgup import Rgup
 from .mgotu import Mgotu
 from .spbgtu import Spbgtu
 from .ptsu import Ptsu
+from .ugtu import Ugtu
 
 
 def init_container():
