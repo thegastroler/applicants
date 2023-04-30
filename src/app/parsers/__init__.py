@@ -8,6 +8,7 @@ from .spbgtu import Spbgtu
 from .ptsu import Ptsu
 from .ugtu import Ugtu
 from .omgups import Omgups
+from .spbgeu import Spbgeu
 
 
 def init_container():

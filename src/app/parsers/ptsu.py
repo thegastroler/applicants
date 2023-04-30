@@ -13,7 +13,7 @@ class Ptsu:
     ]
     ORIGIN = {'Копия': False, 'Оригинал': True}
     @inject
-    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
+    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         for url in self.URL:
             response = requests.get(url[0], headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
             if response.status_code == 200:

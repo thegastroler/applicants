@@ -11,7 +11,7 @@ class Guz:
     URL = "https://www.guz.ru/applicants/priemnaya-kampaniya-2022-2023/enrollees/view_ratings.php?levelTraining="
 
     @inject
-    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
+    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         response = requests.get(self.URL, stream=True, timeout=10)
         if response.status_code == 200:
             text = response.content

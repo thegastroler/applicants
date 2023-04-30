@@ -28,7 +28,7 @@ class Rgsu:
     BUDGET = ['бюджетные', 'внебюджетные']
 
     @inject
-    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
+    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         for _url in self.URL:
             for budget in self.BUDGET:
                 url = _url[0] + budget

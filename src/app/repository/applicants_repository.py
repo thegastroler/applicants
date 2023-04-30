@@ -3,8 +3,8 @@ from contextlib import AbstractAsyncContextManager
 from typing import Callable, Type
 
 from infrastructure.sql import models
+from sqlalchemy import delete, select
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -17,6 +17,10 @@ class ApplicantsRepository(ABC):
 
     @abstractmethod
     async def search(self, snils):
+        ...
+
+    @abstractmethod
+    async def truncate(self):
         ...
 
 
@@ -49,3 +53,8 @@ class SqlaApplicantsRepository(ApplicantsRepository):
                 .filter(self.model.snils == snils))
             items = result.scalars()
             return items
+
+    async def truncate(self) -> None:
+        async with self.session_factory() as session:
+            await session.execute(delete(self.model))
+            await session.commit()

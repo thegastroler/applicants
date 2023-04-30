@@ -12,7 +12,7 @@ class Omgups:
     YES_NO = {"Да": True, "Нет": False}
 
     @inject
-    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])):
+    async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         for url in self.URL:
             response = requests.get(url[0], stream=True)
             if response.status_code == 200:
