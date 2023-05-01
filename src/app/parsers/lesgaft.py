@@ -9,9 +9,9 @@ from fastapi import Depends
 from infrastructure.sql.models import Applicants
 import pdfplumber
 
-class Mggeu:
+class Lesgaft:
     URL = [
-        "https://mggeu.ru/wp-content/uploads/2022/08/Konkursnye-spiski-B-04.08.2022-22-15.pdf",
+        "http://lesgaft.spb.ru/sites/default/files//u91/fk_oo_20.pdf",
     ]
     @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
@@ -29,12 +29,12 @@ class Mggeu:
                                 continue
                             items.append(
                                 Applicants(
-                                    code=row[2].replace('\n', ' '),
+                                    code=row[3].replace('\n', ' '),
                                     position=int(row[0]),
                                     snils=row[1],
-                                    score=int(row[13]) if row[13] else None,
-                                    origin=True if row[17] else False,
-                                    university='МГГЭУ'
+                                    score=int(row[14]) if row[14] else None,
+                                    origin=True if row[9] == "да" else False if row[9] == "нет" else None,
+                                    university='НГУ им. П. Ф. Лесгафта'
                                 )
                             )
                 if items:

@@ -10,6 +10,7 @@ from .ugtu import Ugtu
 from .omgups import Omgups
 from .spbgeu import Spbgeu
 from .mggeu import Mggeu
+from .lesgaft import Lesgaft
 
 
 def init_container():
