@@ -11,6 +11,8 @@ from .omgups import Omgups
 from .spbgeu import Spbgeu
 from .mggeu import Mggeu
 from .lesgaft import Lesgaft
+from .ieup import Ieup
+from .mhti import Mhti
 
 
 def init_container():
