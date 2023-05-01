@@ -13,7 +13,7 @@ celery_app = Celery("worker")
 celery_app.config_from_object("worker.celeryconfig")
 
 celery_app.conf.beat_schedule = {
-    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 60},
+    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 120},
 }
 
 
@@ -44,4 +44,4 @@ async def clear_table(use_case: ApplicantsRepository = Depends(Provide[SqlaRepos
 @inject
 async def aggregate_data():
     parsers.init_container()
-    await parsers.Omgups().worker()
+    await parsers.Mggeu().worker()

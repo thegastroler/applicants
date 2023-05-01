@@ -5,10 +5,11 @@ from .rgsu import Rgsu
 from .rgup import Rgup
 from .mgotu import Mgotu
 from .spbgtu import Spbgtu
-from .ptsu import Ptsu
+from .pstu import Pstu
 from .ugtu import Ugtu
 from .omgups import Omgups
 from .spbgeu import Spbgeu
+from .mggeu import Mggeu
 
 
 def init_container():
