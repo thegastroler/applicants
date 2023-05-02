@@ -14,6 +14,7 @@ from .lesgaft import Lesgaft
 from .ieup import Ieup
 from .mhti import Mhti
 from .spbutuie import Spbutuie
+from .agtu import Agtu
 
 
 def init_container():
