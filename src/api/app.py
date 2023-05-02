@@ -1,15 +1,11 @@
-import json
 import sys
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from app.schemas import ApplicantSchema
-
 
 app = FastAPI()
 

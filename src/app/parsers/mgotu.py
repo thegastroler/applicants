@@ -28,8 +28,8 @@ class Mgotu:
                     pages = int(href[href.index("?page=")+len("?page="):href.index("&t=1&addition=0")])
                 else:
                     break
-                for page in range(2, 10):
-# TODO          for page in range(2, pages+1):
+                # for page in range(2, 10):
+                for page in range(2, pages+1):
                     response = requests.get(url.format(page), stream=True)
                     if response.status_code == 200:
                         text = response.text

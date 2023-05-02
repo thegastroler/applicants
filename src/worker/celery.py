@@ -13,7 +13,7 @@ celery_app = Celery("worker")
 celery_app.config_from_object("worker.celeryconfig")
 
 celery_app.conf.beat_schedule = {
-    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 120},
+    "scheduled_task": {"task": "worker.celery.celery_scheduled_task", "schedule": 300},
 }
 
 
@@ -32,7 +32,7 @@ def truncate():
 @celery_app.task
 @inject
 def celery_scheduled_task():
-    truncate()
+    # truncate()
     asyncio.run(aggregate_data())
 
 
@@ -44,4 +44,18 @@ async def clear_table(use_case: ApplicantsRepository = Depends(Provide[SqlaRepos
 @inject
 async def aggregate_data():
     parsers.init_container()
+    await parsers.Guz().worker()
+    await parsers.Rgup().worker()
+    await parsers.Mgotu().worker()
+    await parsers.Spbgu().worker()
+    await parsers.Pstu().worker()
+    await parsers.Ugtu().worker()
+    await parsers.Omgups().worker()
+    await parsers.Spbgeu().worker()
     await parsers.Mggeu().worker()
+    await parsers.Lesgaft().worker()
+    await parsers.Ieup().worker()
+    await parsers.Mhti().worker()
+    await parsers.Spbutuie().worker()
+    await parsers.Agtu().worker()
+    await parsers.Rgsu().worker()

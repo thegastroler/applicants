@@ -7,7 +7,7 @@ from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
 
-class Spbgtu:
+class Spbgu:
     URL = [
         ["https://technolog.edu.ru/content/clists/04.03.01_Химия_Очная_Бюджет", "Химия"],
     ]

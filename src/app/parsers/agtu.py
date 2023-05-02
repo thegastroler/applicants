@@ -1,7 +1,4 @@
-import os
-
 import pdfplumber
-import requests
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from dependency_injector.wiring import Provide, inject
@@ -13,7 +10,7 @@ class Agtu:
     @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         items = []
-        with pdfplumber.open("pdf/paid.pdf") as f:
+        with pdfplumber.open("app/pdf/paid.pdf") as f:
             pages = f.pages
             code = None
             for i in pages:

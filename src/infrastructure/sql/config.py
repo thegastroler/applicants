@@ -1,8 +1,9 @@
-from pydantic import BaseSettings, BaseConfig
+import os
+
+from pydantic import BaseConfig, BaseSettings
 
 
 class AsyncDatabaseSettings(BaseSettings):
-    host: str = "db:5432"
     user: str = "postgres"
     password: str = "postgres"
     db_name: str = "postgres"
@@ -10,6 +11,12 @@ class AsyncDatabaseSettings(BaseSettings):
 
     class Config(BaseConfig):
         env_prefix = "postgres_"
+
+    @property
+    def host(self):
+        if os.getenv("DOCKER"):
+            return "db:5432"
+        return "localhost:5432"
 
     @property
     def url(self):

@@ -30,6 +30,7 @@ WORKDIR /app
 # Copy installed packages
 COPY --from=build /app/.venv .venv
 ENV PATH="/app/.venv/bin:$PATH"
+ENV DOCKER=True
 
 # Copy application
 COPY src .
