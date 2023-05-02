@@ -1,13 +1,13 @@
 import os
 
-import pandas as pd
+import pdfplumber
 import requests
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicants
-import pdfplumber
+
 
 class Mggeu:
     URL = [
@@ -24,19 +24,21 @@ class Mggeu:
                 items = []
                 with pdfplumber.open("/tmp/metadata.pdf", ) as f:
                     for i in f.pages:
-                        for row in i.extract_table():
-                            if row[0] == '№':
-                                continue
-                            items.append(
-                                Applicants(
-                                    code=row[2].replace('\n', ' '),
-                                    position=int(row[0]),
-                                    snils=row[1],
-                                    score=int(row[13]) if row[13] else None,
-                                    origin=True if row[17] else False,
-                                    university='МГГЭУ'
+                        table = i.extract_table()
+                        if table:
+                            for row in table:
+                                if row[0] == '№':
+                                    continue
+                                items.append(
+                                    Applicants(
+                                        code=row[2].replace('\n', ' '),
+                                        position=int(row[0]),
+                                        snils=row[1],
+                                        score=int(row[13]) if row[13] else None,
+                                        origin=True if row[17] else False,
+                                        university='МГГЭУ'
+                                    )
                                 )
-                            )
                 if items:
                     await use_case.upload(items)
                 os.unlink("/tmp/metadata.pdf")

@@ -13,6 +13,7 @@ from .mggeu import Mggeu
 from .lesgaft import Lesgaft
 from .ieup import Ieup
 from .mhti import Mhti
+from .spbutuie import Spbutuie
 
 
 def init_container():

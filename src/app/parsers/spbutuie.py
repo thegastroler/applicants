@@ -9,9 +9,20 @@ from fastapi import Depends
 from infrastructure.sql.models import Applicants
 
 
-class Lesgaft:
+class Spbutuie:
     URL = [
-        "http://lesgaft.spb.ru/sites/default/files//u91/fk_oo_20.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__37.03.01_o-GSN-P.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__42.03.01_o-GSN-R.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__42.03.05_o-GSN-MK.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__43.03.01_o-GSN-S.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__43.03.02_o-GSN-T.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__43.03.03_o-GSN-GD.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__44.03.01_o-GSN-PO.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__45.03.02_o-GSN-L.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__09.03.03_o-EMI-PI.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__38.03.02_o-EMI-M.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__38.03.04_o-EMI-G.pdf",
+        "https://spbame.ru/abit/SPbUTUiE/Zachislennye/enr__40.03.01_o-YUI-YU.pdf",
     ]
     @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
@@ -23,20 +34,22 @@ class Lesgaft:
                     f.write(content)
                 items = []
                 with pdfplumber.open("/tmp/metadata.pdf", ) as f:
-                    for i in f.pages:
+                    pages = f.pages
+                    code = pages[0].extract_text_lines()[1]["text"].split()[1].replace('"', "")
+                    for i in pages:
                         table = i.extract_table()
                         if table:
                             for row in table:
-                                if row[0] == '№':
+                                if not row[0] or not row[0].isdigit():
                                     continue
                                 items.append(
                                     Applicants(
-                                        code=row[3].replace('\n', ' '),
+                                        code=code,
                                         position=int(row[0]),
                                         snils=row[1],
-                                        score=int(row[14]) if row[14] else None,
-                                        origin=True if row[9] == "да" else False if row[9] == "нет" else None,
-                                        university='НГУ им. П. Ф. Лесгафта'
+                                        score=int(row[12]) if row[12] else None,
+                                        origin=True,
+                                        university='СПбУТУиЭ'
                                     )
                                 )
                 if items:
