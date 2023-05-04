@@ -127,4 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-src/infrastructure/sql/migrations/versions
+src/infrastructure/sql/migrations/versions/*
