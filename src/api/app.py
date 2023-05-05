@@ -1,4 +1,5 @@
 import sys
+from typing import Optional
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, FastAPI
@@ -12,8 +13,15 @@ app = FastAPI()
 
 @app.get("/search")
 @inject
-async def get_data(snils: str, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> list[ApplicantSchema]:
-    result = await use_case.search(snils)
+async def get_data(
+        snils: Optional[str] = None,
+        code: Optional[str] = None,
+        university: Optional[str] = None,
+        use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])
+    ) -> list[ApplicantSchema]:
+    if not any((snils, code, university)):
+        return []
+    result = await use_case.search(snils, code, university)
     result = [ApplicantSchema.from_orm(i) for i in result]
     return result
 

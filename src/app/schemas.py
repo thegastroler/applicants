@@ -7,7 +7,7 @@ class ApplicantSchema(BaseModel):
     code: Optional[str]
     university: str
     score: Optional[str]
-    origin: str
+    origin: Optional[str]
     position: Optional[str]
 
     class Config:

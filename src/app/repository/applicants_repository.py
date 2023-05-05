@@ -16,7 +16,7 @@ class ApplicantsRepository(ABC):
         ...
 
     @abstractmethod
-    async def search(self, snils):
+    async def search(self, snils, code, university):
         ...
 
     @abstractmethod
@@ -46,11 +46,13 @@ class SqlaApplicantsRepository(ApplicantsRepository):
                 ]).on_conflict_do_nothing())
             await session.commit()
 
-    async def search(self, snils):
+    async def search(self, snils, code, university):
         async with self.session_factory() as session:
-            result = await session.execute(
-                select(self.model)
-                .filter(self.model.snils == snils))
+            query = select(self.model)
+            query = query.filter(self.model.snils == snils) if snils else query
+            query = query.filter(self.model.code == code) if code else query
+            query = query.filter(self.model.university == university) if university else query
+            result = await session.execute(query)
             items = result.scalars()
             return items
 
