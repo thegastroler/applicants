@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Guz:
@@ -28,7 +28,7 @@ class Guz:
                 for k in i:
                     k[2] = False if k[2] == "-" else True
             items = [
-                Applicants(
+                Applicant(
                     code=specs[idx],
                     position=int(i[0]),
                     snils=i[1],

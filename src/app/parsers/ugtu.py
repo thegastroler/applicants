@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Ugtu:
@@ -28,7 +28,7 @@ class Ugtu:
                 indexes = [0, 1, 3, 7]
                 rows = [[[f[k] for k in indexes] for f in i] for i in rows]
                 items = [
-                    Applicants(
+                    Applicant(
                         code=specs[idx],
                         position=int(i[0].replace(".", "")),
                         snils=i[1],

@@ -25,7 +25,7 @@ class ApplicantsRepository(ABC):
 
 
 class SqlaApplicantsRepository(ApplicantsRepository):
-    model = models.Applicants
+    model = models.Applicant
 
     def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]):
         self.session_factory = session_factory

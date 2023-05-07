@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Mgotu:
@@ -44,7 +44,7 @@ class Mgotu:
         indexes = [2, 4, 5, 9, 11]
         data = [[i[k] for k in indexes] for i in data]
         items = [
-            Applicants(
+            Applicant(
                 code=i[0],
                 position=int(i[2]),
                 snils=i[1],

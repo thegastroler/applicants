@@ -5,8 +5,8 @@ from sqlalchemy import (VARCHAR, Boolean, Column, DateTime, Integer,
                         SmallInteger, UniqueConstraint)
 
 
-class Applicants(Base):
-    __tablename__ = "applicants"
+class Applicant(Base):
+    __tablename__ = "applicant"
     id = Column(Integer, primary_key=True, autoincrement=True)
     snils = Column(VARCHAR(50), nullable=False)
     code = Column(VARCHAR(255), nullable=True)

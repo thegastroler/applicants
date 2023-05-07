@@ -1,1 +1,1 @@
-from .model import Applicants
+from .applicant import Applicant

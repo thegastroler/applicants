@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Pstu:
@@ -73,7 +73,7 @@ class Pstu:
                 for i, _ in enumerate(data):
                     data[i][3] = data[i][3].encode('l1').decode()
                 items = [
-                    Applicants(
+                    Applicant(
                         code=spec,
                         position=int(i[0]),
                         snils=i[1],

@@ -1,9 +1,10 @@
 import logging
 from asyncio import current_task
-from contextlib import asynccontextmanager, AbstractAsyncContextManager
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
+from typing import Callable
+
 from sqlalchemy.ext import asyncio as async_sa
 from sqlalchemy.ext.declarative import declarative_base
-from typing import Callable
 
 logger = logging.getLogger(__name__)
 Base = declarative_base()

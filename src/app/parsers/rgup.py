@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Rgup:
@@ -26,7 +26,7 @@ class Rgup:
                 indexes = [0, 1, 2]
                 data = [[i[k] for k in indexes] for i in items]
                 items = [
-                    Applicants(
+                    Applicant(
                         code=url[1],
                         position=int(i[0]),
                         snils=i[1],

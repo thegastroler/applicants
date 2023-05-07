@@ -1,7 +1,7 @@
+from app.repository.applicants_repository import (ApplicantsRepository,
+                                                  SqlaApplicantsRepository)
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Factory
-from app.repository.applicants_repository import ApplicantsRepository, SqlaApplicantsRepository
-
 from infrastructure.sql.container import SqlAlchemyContainer
 
 

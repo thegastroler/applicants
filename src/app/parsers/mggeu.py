@@ -6,7 +6,7 @@ from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Mggeu:
@@ -30,7 +30,7 @@ class Mggeu:
                                 if row[0] == '№':
                                     continue
                                 items.append(
-                                    Applicants(
+                                    Applicant(
                                         code=row[2].replace('\n', ' '),
                                         position=int(row[0]),
                                         snils=row[1],

@@ -6,7 +6,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from infrastructure.sql.config import AsyncDatabaseSettings
 from infrastructure.sql.db import Base  # noqa: E402
-from infrastructure.sql.models import *  # noqa: F401,E402,F403
+from infrastructure.sql.models import * # noqa: F401,E402,F403
+from api.auth.model import * # noqa: F401,E402,F403
 
 from alembic import context
 

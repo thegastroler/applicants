@@ -3,7 +3,7 @@ from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Agtu:
@@ -23,7 +23,7 @@ class Agtu:
                         if not row[0] or not row[0].isdigit():
                             continue
                         items.append(
-                            Applicants(
+                            Applicant(
                                 code=code,
                                 position=int(row[0]),
                                 snils=row[1].replace("\n", " "),

@@ -4,7 +4,7 @@ from app.repository.applicants_repository import ApplicantsRepository
 from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
-from infrastructure.sql.models import Applicants
+from infrastructure.sql.models import Applicant
 
 
 class Rgsu:
@@ -48,7 +48,7 @@ class Rgsu:
                     for i in items:
                         i[-1] = self.YES_NO[i[-1]]
                     items = [
-                        Applicants(
+                        Applicant(
                             code=_url[1],
                             position=int(i[0]),
                             snils=i[1],

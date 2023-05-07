@@ -3,12 +3,57 @@ from typing import Optional
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, FastAPI
+from fastapi_users import FastAPIUsers, fastapi_users
+from infrastructure.redis.handlers import change_period, create_parsing_period
+from worker.celery import parse_data
 
+from api.auth.auth import auth_backend
+from api.auth.manager import create_user, get_user_manager
+from api.auth.model import User
+from api.auth.schemas import UserCreate, UserRead
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from app.schemas import ApplicantSchema
 
 app = FastAPI()
+
+fastapi_users = FastAPIUsers[User, int](
+    get_user_manager,
+    [auth_backend],
+)
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+
+super_user = fastapi_users.current_user(superuser=True)
+
+@app.on_event("startup")
+async def startup_event():
+    await create_user("abc@abc.abc", "admin", "123456", True)
+    await create_parsing_period()
+    parse_data.delay()
+
+
+@app.get("/force_parsing")
+async def force_parsing(user: User = Depends(super_user)):
+    parse_data.delay()
+    return "Tasks delayed"
+
+
+@app.get("/change_parsing_period")
+async def change_parsing_period(period: int, user: User = Depends(super_user)):
+    await change_period(period)
+    parse_data.delay()
+    return "Parsing period changed"
 
 
 @app.get("/search")
