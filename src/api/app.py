@@ -15,7 +15,27 @@ from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from app.schemas import ApplicantSchema
 
-app = FastAPI()
+
+tags_metadata = [
+    {
+        "name": "force_parsing",
+        "description": "Принудительно запустить парсинг вне очереди",
+    },
+    {
+        "name": "change_parsing_period",
+        "description": "Изменить период парсинга (_только для админа_)",
+    },
+    {
+        "name": "search",
+        "description": "Метод поиска данных (_только для админа_)",
+    },
+    {
+        "name": "auth",
+        "description": "Аутентификация",
+    },
+]
+
+app = FastAPI(openapi_tags=tags_metadata)
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -43,20 +63,20 @@ async def startup_event():
     parse_data.delay()
 
 
-@app.get("/force_parsing")
+@app.get("/force_parsing", tags=["force_parsing"])
 async def force_parsing(user: User = Depends(super_user)):
     parse_data.delay()
     return "Tasks delayed"
 
 
-@app.get("/change_parsing_period")
+@app.get("/change_parsing_period", tags=["change_parsing_period"])
 async def change_parsing_period(period: int, user: User = Depends(super_user)):
     await change_period(period)
     parse_data.delay()
     return "Parsing period changed"
 
 
-@app.get("/search")
+@app.get("/search", tags=["search"])
 @inject
 async def get_data(
         snils: Optional[str] = None,
