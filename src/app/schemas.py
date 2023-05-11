@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 
 class ApplicantSchema(BaseModel):
-    snils: str
     code: Optional[str]
     university: str
     score: Optional[str]
@@ -12,7 +11,3 @@ class ApplicantSchema(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-class ApplicantsSchema(BaseModel):
-    items: List[ApplicantSchema]

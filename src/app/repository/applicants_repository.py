@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from contextlib import AbstractAsyncContextManager
 from typing import Callable, Type
 
+from app.schemas import ApplicantSchema
 from infrastructure.sql import models
 from sqlalchemy import delete, select
 from sqlalchemy.dialects.postgresql import insert
@@ -52,9 +53,19 @@ class SqlaApplicantsRepository(ApplicantsRepository):
             query = query.filter(self.model.snils == snils) if snils else query
             query = query.filter(self.model.code == code) if code else query
             query = query.filter(self.model.university == university) if university else query
+            sub_result = await session.execute(query)
+            sub_result = [i.snils for i in sub_result.scalars()]
+            query = select(self.model).filter(self.model.snils.in_(sub_result)).order_by(self.model.snils) if sub_result else None
             result = await session.execute(query)
-            items = result.scalars()
+            result = result.scalars().all()
+            items = dict()
+            for i in result:
+                if not items.get(i.snils):
+                    items[i.snils] = [ApplicantSchema.from_orm(i)]
+                else:
+                    items.get(i.snils).append(ApplicantSchema.from_orm(i))
             return items
+
 
     async def truncate(self) -> None:
         async with self.session_factory() as session:

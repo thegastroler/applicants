@@ -1,5 +1,5 @@
 import sys
-from typing import Optional
+from typing import Dict, List, Optional
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, FastAPI
@@ -14,7 +14,6 @@ from api.auth.schemas import UserCreate, UserRead
 from app.repository import SqlaRepositoriesContainer
 from app.repository.applicants_repository import ApplicantsRepository
 from app.schemas import ApplicantSchema
-
 
 tags_metadata = [
     {
@@ -83,11 +82,10 @@ async def get_data(
         code: Optional[str] = None,
         university: Optional[str] = None,
         use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])
-    ) -> list[ApplicantSchema]:
+    ) -> Dict[str, List[ApplicantSchema]]:
     if not any((snils, code, university)):
         return []
     result = await use_case.search(snils, code, university)
-    result = [ApplicantSchema.from_orm(i) for i in result]
     return result
 
 container = SqlaRepositoriesContainer()
