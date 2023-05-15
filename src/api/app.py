@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_users import FastAPIUsers, fastapi_users
 from infrastructure.redis.handlers import change_period, create_parsing_period
 from worker.celery import parse_data
@@ -35,6 +36,13 @@ tags_metadata = [
 ]
 
 app = FastAPI(openapi_tags=tags_metadata)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
