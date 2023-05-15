@@ -1,4 +1,5 @@
 import asyncio
+from loguru import logger
 import sys
 
 from app import parsers
@@ -56,18 +57,21 @@ async def clear_table(use_case: ApplicantsRepository = Depends(Provide[SqlaRepos
 @inject
 async def aggregate_data():
     parsers.init_container()
-    await parsers.Guz().worker()
-    await parsers.Rgup().worker()
-    await parsers.Mgotu().worker()
-    await parsers.Spbgu().worker()
-    await parsers.Pstu().worker()
-    await parsers.Ugtu().worker()
-    await parsers.Omgups().worker()
-    await parsers.Spbgeu().worker()
-    await parsers.Mggeu().worker()
-    await parsers.Lesgaft().worker()
-    await parsers.Ieup().worker()
-    await parsers.Mhti().worker()
-    await parsers.Spbutuie().worker()
-    await parsers.Agtu().worker()
-    await parsers.Rgsu().worker()
+    try:
+        await parsers.Guz().worker()
+        await parsers.Rgup().worker()
+        await parsers.Mgotu().worker()
+        await parsers.Spbgu().worker()
+        await parsers.Pstu().worker()
+        await parsers.Ugtu().worker()
+        await parsers.Omgups().worker()
+        await parsers.Spbgeu().worker()
+        await parsers.Mggeu().worker()
+        await parsers.Lesgaft().worker()
+        await parsers.Ieup().worker()
+        await parsers.Mhti().worker()
+        await parsers.Spbutuie().worker()
+        await parsers.Agtu().worker()
+        await parsers.Rgsu().worker()
+    except Exception as e:
+        logger.info(e)

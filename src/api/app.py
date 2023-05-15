@@ -82,7 +82,7 @@ async def get_data(
         code: Optional[str] = None,
         university: Optional[str] = None,
         use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])
-    ) -> Dict[str, List[ApplicantSchema]]:
+    ) -> Optional[Dict[str, List[ApplicantSchema]]]:
     if not any((snils, code, university)):
         return []
     result = await use_case.search(snils, code, university)

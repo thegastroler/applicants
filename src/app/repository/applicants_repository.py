@@ -55,16 +55,17 @@ class SqlaApplicantsRepository(ApplicantsRepository):
             query = query.filter(self.model.university == university) if university else query
             sub_result = await session.execute(query)
             sub_result = [i.snils for i in sub_result.scalars()]
-            query = select(self.model).filter(self.model.snils.in_(sub_result)).order_by(self.model.snils) if sub_result else None
-            result = await session.execute(query)
-            result = result.scalars().all()
-            items = dict()
-            for i in result:
-                if not items.get(i.snils):
-                    items[i.snils] = [ApplicantSchema.from_orm(i)]
-                else:
-                    items.get(i.snils).append(ApplicantSchema.from_orm(i))
-            return items
+            if sub_result:
+                query = select(self.model).filter(self.model.snils.in_(sub_result)).order_by(self.model.snils) if sub_result else None
+                result = await session.execute(query)
+                result = result.scalars().all()
+                items = dict()
+                for i in result:
+                    if not items.get(i.snils):
+                        items[i.snils] = [ApplicantSchema.from_orm(i)]
+                    else:
+                        items.get(i.snils).append(ApplicantSchema.from_orm(i))
+                return items
 
 
     async def truncate(self) -> None:

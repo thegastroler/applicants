@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicant
+from loguru import logger
 
 
 class Rgup:
@@ -17,24 +18,27 @@ class Rgup:
     @inject
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         for url in self.URL:
-            response = requests.get(url[0], stream=True)
-            if response.status_code == 200:
-                text = response.text
-                soup = BeautifulSoup(text, 'html.parser')
-                rows = soup.find_all("tr", {"class": "R7"})
-                items = [[k.text for k in i.find_all("td")] for i in rows]
-                indexes = [0, 1, 2]
-                data = [[i[k] for k in indexes] for i in items]
-                items = [
-                    Applicant(
-                        code=url[1],
-                        position=int(i[0]),
-                        snils=i[1],
-                        score=int(i[2]) if i[2] else None,
-                        origin=None,
-                        university='РГУП'
-                    )
-                    for i in data
-                ]
-                if items:
-                    await use_case.upload(items)
+            try:
+                response = requests.get(url[0], stream=True)
+                if response.status_code == 200:
+                    text = response.text
+                    soup = BeautifulSoup(text, 'html.parser')
+                    rows = soup.find_all("tr", {"class": "R7"})
+                    items = [[k.text for k in i.find_all("td")] for i in rows]
+                    indexes = [0, 1, 2]
+                    data = [[i[k] for k in indexes] for i in items]
+                    items = [
+                        Applicant(
+                            code=url[1],
+                            position=int(i[0]),
+                            snils=i[1],
+                            score=int(i[2]) if i[2] else None,
+                            origin=None,
+                            university='РГУП'
+                        )
+                        for i in data
+                    ]
+                    if items:
+                        await use_case.upload(items)
+            except Exception as e:
+                logger.info(e)

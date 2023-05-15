@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from infrastructure.sql.models import Applicant
+from loguru import logger
 
 
 class Rgsu:
@@ -31,32 +32,35 @@ class Rgsu:
     async def worker(self, use_case: ApplicantsRepository = Depends(Provide[SqlaRepositoriesContainer.applicants_repository])) -> None:
         for _url in self.URL:
             for budget in self.BUDGET:
-                url = _url[0] + budget
-                response = requests.get(url, stream=True)
-                if response.status_code == 200:
-                    text = response.text
-                    soup = BeautifulSoup(text, 'html.parser')
-                    table = soup.find("div", {"class": "table-wrapper"})
-                    body = table.find("tbody")
-                    rows = body.find_all("tr")
-                    items = [[k.text for k in i.find_all("td")] for i in rows]
-                    for i in items:
-                        if not len(i) == 7:
-                            items.remove(i)
-                    indexes = [0, 1, 2, 5]
-                    items = [[i[k] for k in indexes] for i in items]
-                    for i in items:
-                        i[-1] = self.YES_NO[i[-1]]
-                    items = [
-                        Applicant(
-                            code=_url[1],
-                            position=int(i[0]),
-                            snils=i[1],
-                            score=int(i[2]),
-                            origin=i[3],
-                            university='РГСУ'
-                        )
-                        for i in items
-                    ]
-                    if items:
-                        await use_case.upload(items)
+                try:
+                    url = _url[0] + budget
+                    response = requests.get(url, stream=True)
+                    if response.status_code == 200:
+                        text = response.text
+                        soup = BeautifulSoup(text, 'html.parser')
+                        table = soup.find("div", {"class": "table-wrapper"})
+                        body = table.find("tbody")
+                        rows = body.find_all("tr")
+                        items = [[k.text for k in i.find_all("td")] for i in rows]
+                        for i in items:
+                            if not len(i) == 7:
+                                items.remove(i)
+                        indexes = [0, 1, 2, 5]
+                        items = [[i[k] for k in indexes] for i in items]
+                        for i in items:
+                            i[-1] = self.YES_NO[i[-1]]
+                        items = [
+                            Applicant(
+                                code=_url[1],
+                                position=int(i[0]),
+                                snils=i[1],
+                                score=int(i[2]),
+                                origin=i[3],
+                                university='РГСУ'
+                            )
+                            for i in items
+                        ]
+                        if items:
+                            await use_case.upload(items)
+                except Exception as e:
+                    logger.info(e)
