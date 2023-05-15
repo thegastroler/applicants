@@ -16,7 +16,7 @@ class Applicant(Base):
     position = Column(SmallInteger, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    __table_args__ = (UniqueConstraint("snils", "code", "university", "score", "position", name="unique_applicant"),)
+    __table_args__ = (UniqueConstraint("snils", "code", "university", "position", name="unique_applicant"),)
 
     class Config:
         orm_mode = True
