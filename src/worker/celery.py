@@ -46,7 +46,7 @@ def celery_scheduled_task():
     if not parsing_trigger:
         parsing_period = asyncio.run(get_parsing_period())
         asyncio.run(set_parsing_trigger(parsing_period))
-        # asyncio.run(aggregate_data())
+        asyncio.run(aggregate_data())
 
 
 @inject
