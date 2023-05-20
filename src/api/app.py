@@ -37,8 +37,11 @@ tags_metadata = [
 
 app = FastAPI(openapi_tags=tags_metadata)
 
+origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,7 +70,7 @@ super_user = fastapi_users.current_user(superuser=True)
 async def startup_event():
     await create_user("abc@abc.abc", "admin", "123456", True)
     await create_parsing_period()
-    parse_data.delay()
+    # parse_data.delay()
 
 
 @app.get("/force_parsing", tags=["force_parsing"])

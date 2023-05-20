@@ -6,6 +6,7 @@ from api.auth.schemas import UserCreate
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from fastapi_users.exceptions import UserAlreadyExists
+from loguru import logger
 
 SECRET = "SECRET"
 
@@ -15,7 +16,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
+        logger.info(f"User {user.id} has registered.")
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
@@ -37,6 +38,6 @@ async def create_user(email: str, username: str, password: str, is_superuser: bo
                             email=email, username=username, password=password, is_superuser=is_superuser
                         )
                     )
-                    print(f"User created {user}")
+                    logger.info(f"User created {user}")
     except UserAlreadyExists:
-        print(f"User {email} already exists")
+        logger.info(f"User {email} already exists")
